@@ -1,6 +1,6 @@
 # Retro Sprite Editor
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sprite Editor written for use in the browser. Editor is for creating sprites and outputing the data for a variety of retro computers.
 
 ## Available Scripts
 
