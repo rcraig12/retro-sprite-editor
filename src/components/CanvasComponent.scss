@@ -1,0 +1,11 @@
+#canvasContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 4px;
+  
+  canvas {
+    border-right: 1px solid #444444;
+    border-bottom: 1px solid #444444;
+  }
+}
