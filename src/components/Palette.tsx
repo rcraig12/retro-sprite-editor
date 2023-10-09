@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedPen, RootState } from '../store'; // Replace with your actual path
+import { setSelectedPen } from '../slices/selectedPenSlice'; // Replace with your actual path
+
+import { RootState } from '../store'; // Replace with your actual path
 import './Palette.scss';
 
 interface PaletteProps {
   style?: React.CSSProperties;
 }
 
+
+
 const Palette: React.FC<PaletteProps> = ({style}) => {
+
   const colors = useSelector((state: RootState) => state.palette.value);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 20, y: 320 });
@@ -54,7 +59,7 @@ const Palette: React.FC<PaletteProps> = ({style}) => {
   const handlePaletteClick = (event: React.MouseEvent<HTMLDivElement>) => {
 
     event.preventDefault();
-    const colour = (event.currentTarget as HTMLDivElement).dataset.colour;
+    const colour: string = (event.currentTarget as HTMLDivElement).dataset.colour as string;
     dispatch(setSelectedPen(colour))
 
   }

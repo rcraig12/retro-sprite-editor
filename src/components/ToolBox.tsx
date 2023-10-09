@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSelectedTool } from '../store';
+import { setSelectedTool } from '../slices/selectedToolSlice';
 import './ToolBox.scss';
 
 interface ToolBoxProps {

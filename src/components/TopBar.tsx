@@ -1,6 +1,9 @@
 import React, {ChangeEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPlatform, changePalette, RootState, setSpriteDimensionX, setSpriteDimensionY } from '../store';
+import { setPlatform } from '../slices/platformSlice';
+import { changePalette } from '../slices/paletteSlice';
+import { setSpriteDimensionX, setSpriteDimensionY } from '../slices/spriteDimensionSlice';
+import { RootState } from '../store';
 
 import { c64Pallete } from '../palette/c64';
 import { bbcPallete } from '../palette/bbc';
