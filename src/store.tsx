@@ -9,7 +9,7 @@ import spriteDimensionSlice from './slices/spriteDimensionSlice';
 import cellSizeSlice from './slices/cellSizeSlice';
 import selectedToolSlice from './slices/selectedToolSlice';
 import selectedPenSlice from './slices/selectedPenSlice';
-import gridDataReducer from './slices/gridDataSlice';
+import gridDataSlice from './slices/gridDataSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,7 +19,8 @@ const store = configureStore({
     spriteDimension: spriteDimensionSlice,
     cellSize: cellSizeSlice,
     selectedTool: selectedToolSlice,
-    selectedPen: selectedPenSlice
+    selectedPen: selectedPenSlice,
+    gridData: gridDataSlice
   }
 });
 

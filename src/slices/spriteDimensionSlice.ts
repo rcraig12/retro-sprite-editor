@@ -26,6 +26,5 @@ const spriteDimensionSlice = createSlice({
   },
 });
 
-
 export const { setSpriteDimensionX, setSpriteDimensionY } = spriteDimensionSlice.actions;
 export default spriteDimensionSlice.reducer;

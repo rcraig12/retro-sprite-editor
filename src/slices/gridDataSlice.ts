@@ -21,9 +21,15 @@ const gridDataSlice = createSlice({
     setGridData: (state, action: PayloadAction<GridCell[][]>) => {
       state.value = action.payload;
     },
-    // Potentially more reducers...
+    drawCell: (state, action: PayloadAction<{x: number, y: number, color: string, byteIndex: number}>) => {
+      const {x, y, color, byteIndex} = action.payload;
+      // Make sure you're not trying to modify a cell that doesn't exist.
+      if (state.value[y] && state.value[y][x]) {
+        state.value[y][x] = { isDrawn: true, color, byteIndex };
+      }
+    },
   },
 });
 
-export const { setGridData } = gridDataSlice.actions;
+export const { setGridData, drawCell } = gridDataSlice.actions;
 export default gridDataSlice.reducer;

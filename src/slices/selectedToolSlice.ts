@@ -18,6 +18,5 @@ const selectedToolSlice = createSlice({
   }
 });
 
-
 export const { setSelectedTool } = selectedToolSlice.actions;
 export default selectedToolSlice.reducer;

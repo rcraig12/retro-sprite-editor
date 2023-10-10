@@ -21,6 +21,5 @@ const totalSpritesSlice = createSlice({
   }
 });
 
-
 export const { increment, decrement } = totalSpritesSlice.actions;
 export default totalSpritesSlice.reducer;

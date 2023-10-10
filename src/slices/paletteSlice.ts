@@ -38,6 +38,5 @@ const paletteSlice = createSlice({
   }
 });
 
-
 export const { addColor, removeColor, updateColor, changePalette } = paletteSlice.actions;
 export default paletteSlice.reducer;

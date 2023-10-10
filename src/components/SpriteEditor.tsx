@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setGridData, drawCell } from '../slices/gridDataSlice';
 import { RootState } from '../store'; 
 import CanvasComponent from './CanvasComponent';
 
@@ -9,25 +10,29 @@ interface SpriteEditorProps {
   cellSize: number;
 }
 
-interface GridCell {
-  isDrawn: boolean;
-  color: string;
-  byteIndex: number;
-}
-
 const SpriteEditor: React.FC<SpriteEditorProps> = ({ gridWidth, gridHeight, cellSize }) => {
+
+  const dispatch = useDispatch();
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
   const palette = useSelector((state: RootState) => state.palette.value);
   const selectedPen = useSelector((state: RootState) => state.selectedPen.value);
+  const spriteDimensionX = useSelector((state: RootState) => state.spriteDimension.value.x);
+  const spriteDimensionY = useSelector((state: RootState) => state.spriteDimension.value.y);
+  const gridData = useSelector((state: RootState) => state.gridData.value)
 
-  const initialGridData = Array(gridHeight).fill(
-    Array(gridWidth).fill({ isDrawn: false, color: '', byteIndex: 0 })
-  );
-
-  const [gridData, setGridData] = useState<GridCell[][]>(initialGridData);
-
+  const initialGridData = useMemo(() => (
+    Array(spriteDimensionY).fill(
+      Array(spriteDimensionX).fill({ isDrawn: false, color: '#1b1b1b', byteIndex: 0 })
+    )
+  ), [spriteDimensionX, spriteDimensionY]);
+  
+  useEffect(() => {
+    dispatch(setGridData(initialGridData));
+  }, [dispatch, initialGridData]);
+  
   const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -41,14 +46,18 @@ const SpriteEditor: React.FC<SpriteEditorProps> = ({ gridWidth, gridHeight, cell
 
     const newByteIndex = palette.findIndex(p => p.colorCode === selectedPen);
     
+    dispatch(drawCell({x: colIndex, y: rowIndex, color: selectedPen, byteIndex: newByteIndex}));
+
     const newGridData = gridData.map((row, ri) =>
       row.map((cell, ci) => 
         (ri === rowIndex && ci === colIndex) 
-          ? { isDrawn: true, color: selectedPen, byteIndex: newByteIndex } 
+          ? { 
+            isDrawn: true, color: selectedPen, byteIndex: newByteIndex 
+          } 
           : cell
       )
     );
-    setGridData(newGridData);
+    dispatch(setGridData(newGridData));
   };
 
   // Handle mouse events...
@@ -126,12 +135,12 @@ const SpriteEditor: React.FC<SpriteEditorProps> = ({ gridWidth, gridHeight, cell
 
         // If there’s an actual update, update the grid data state
         if (JSON.stringify(newGridData) !== JSON.stringify(gridData)) {
-            setGridData(newGridData);
+            dispatch(setGridData(newGridData));
         }
     };
 
     updateGridWithNewPalette();
-}, [palette, gridData]);
+}, [palette, gridData, dispatch]);
 
   
   
