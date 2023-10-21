@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Window from './Window';
 import ToolStrip from './ToolStrip';
 import SpriteEditor from './SpriteEditor';
 import { RootState } from '../store';
+import { Dragging, Dropped } from '../slices/zIndexManagerSlice';
 import './Editor.scss';
 
 interface EditorProps {
@@ -17,10 +18,14 @@ const Editor: React.FC<EditorProps> = ({ style }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 200, y: 320 });
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
+  const zIndex = useSelector((state: RootState) => state.zIndex.components.editor);
+
+  const dispatch = useDispatch();
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     setLastMousePosition({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
+    dispatch(Dragging('editor'));
   };
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
@@ -33,7 +38,8 @@ const Editor: React.FC<EditorProps> = ({ style }) => {
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  }, []);
+    dispatch(Dropped('editor'));
+  }, [dispatch]);
 
   useEffect(() => {
     if (isDragging) {
@@ -51,7 +57,7 @@ const Editor: React.FC<EditorProps> = ({ style }) => {
     <>
       <Window 
         id="editor" 
-        style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: isDragging ? 100 : 1 }} 
+        style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: zIndex }} 
         title="Sprite Editor" 
         onMouseDown={onMouseDown}
       >

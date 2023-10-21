@@ -9,7 +9,10 @@ import spriteDimensionSlice from './slices/spriteDimensionSlice';
 import cellSizeSlice from './slices/cellSizeSlice';
 import selectedToolSlice from './slices/selectedToolSlice';
 import selectedPenSlice from './slices/selectedPenSlice';
+import selectedSpriteSlice from './slices/selectedSpriteSlice';
 import gridDataSlice from './slices/gridDataSlice';
+import spriteLibrarySlice from './slices/spriteLibrarySlice';
+import zIndexManagerSlice from './slices/zIndexManagerSlice';
 
 const store = configureStore({
   reducer: {
@@ -20,7 +23,10 @@ const store = configureStore({
     cellSize: cellSizeSlice,
     selectedTool: selectedToolSlice,
     selectedPen: selectedPenSlice,
-    gridData: gridDataSlice
+    selectedSprite: selectedSpriteSlice,
+    gridData: gridDataSlice,
+    spriteLibrary: spriteLibrarySlice,
+    zIndex: zIndexManagerSlice
   }
 });
 

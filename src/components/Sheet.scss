@@ -1,0 +1,57 @@
+#sheet.window {
+
+  .sheet-row {
+    display: flex;
+    flex-direction: row;
+    min-height: 92px;
+    max-width: 780px;
+    flex-wrap: wrap;
+    padding-left: 2px;
+    padding-right: 2px;
+    
+  }
+
+  .spriteslide{
+    margin: 4px 2px 2px 2px;
+    padding: 0px 6px 6px 6px;
+    background-color: #3d3d3d;
+    border-radius: 6px;
+    box-shadow: inset 0px 0px 4px 1px rgba(0,0,0,0.5);
+    border: 1px solid #080808;
+  }
+
+  .spriteslideinner{
+    padding: 8px 2px 2px 2px;
+    background-color: #1b1b1b;
+    border-radius: 2px;
+  }
+
+  .sprite{
+    padding: 0px 4px;
+  }
+
+  .sprite-container{
+    display: flex;
+    flex-direction: row;
+    color: #ffffff;
+    font-size: small;
+    padding: 2px 3px;
+
+    .sprite-index{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .remove-sprite{
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      align-items: flex-end;
+      
+    }
+
+    .close{
+      cursor: pointer;
+    }
+  }
+}

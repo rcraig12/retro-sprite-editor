@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
+import { Dragging, Dropped } from '../slices/zIndexManagerSlice';
 import './Preview.scss';
 
 interface PreviewProps {
@@ -12,19 +13,23 @@ const Preview: React.FC<PreviewProps> = ({ style }) => {
   const [position, setPosition] = useState({ x: 200, y: 70 });
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
 
+  const dispatch = useDispatch();
   const gridData = useSelector((state: RootState) => state.gridData.value);
   const spriteDimensionX = useSelector((state: RootState) => state.spriteDimension.value.x);
   const spriteDimensionY = useSelector((state: RootState) => state.spriteDimension.value.y);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const zIndex = useSelector((state: RootState) => state.zIndex.components.toolbox);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setLastMousePosition({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
+    dispatch(Dragging('preview'));
   };
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  }, []);
+    dispatch(Dropped('preview'));
+  }, [dispatch]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging) return;
@@ -71,7 +76,7 @@ const Preview: React.FC<PreviewProps> = ({ style }) => {
     <div 
       id="preview" 
       className="preview" 
-      style={{ ...style, position: 'absolute', left: position.x, top: position.y, zIndex: isDragging ? 100 : 1 }}
+      style={{ ...style, position: 'absolute', left: position.x, top: position.y, zIndex: zIndex }}
       onMouseDown={handleMouseDown}
     >
       <div className="preview-title">Preview</div>

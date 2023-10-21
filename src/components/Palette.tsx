@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store'; // Replace with your actual path
+import { Dragging, Dropped } from '../slices/zIndexManagerSlice';
 import { setSelectedPen } from '../slices/selectedPenSlice'; // Replace with your actual path
 
-import { RootState } from '../store'; // Replace with your actual path
 import './Palette.scss';
 
 interface PaletteProps {
   style?: React.CSSProperties;
 }
-
-
 
 const Palette: React.FC<PaletteProps> = ({style}) => {
 
@@ -18,16 +17,20 @@ const Palette: React.FC<PaletteProps> = ({style}) => {
   const [position, setPosition] = useState({ x: 20, y: 320 });
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
 
+  const zIndex = useSelector((state: RootState) => state.zIndex.components.palette);
+
   const dispatch = useDispatch();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setLastMousePosition({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
+    dispatch(Dragging('palette'));
   };
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  }, []);
+    dispatch(Dropped('palette'));
+  }, [dispatch]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging) return;
@@ -68,7 +71,7 @@ const Palette: React.FC<PaletteProps> = ({style}) => {
     <div 
       id="palette" 
       className="palette" 
-      style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: isDragging ? 100 : 1 }}
+      style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: zIndex }}
       onMouseDown={handleMouseDown}
     >
       <div className="palette-title">Palette</div>

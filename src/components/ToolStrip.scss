@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     padding: 0px 0px;
+    cursor: pointer;
 
     .label {
     display: flex;
@@ -27,12 +28,21 @@
       align-items: center;
     }
 
+    .noborder {
+      border: none;
+    }
+
     .colorbutton {
       display: flex;
       width: 20px;
       height: 12px;
       padding: 2px;
       background-color: #ffffff;
+    }
+
+    .svgIcon {
+      display: flex;
+      padding: 2px;
     }
 
   }

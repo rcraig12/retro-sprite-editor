@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { Dragging, Dropped } from '../slices/zIndexManagerSlice';
 import { setSelectedTool } from '../slices/selectedToolSlice';
 import './ToolBox.scss';
 
@@ -16,17 +18,21 @@ const ToolBox: React.FC<ToolBoxProps> = ({style, onMouseDown}) => {
   const [lastMousePosition, setLastMousePosition] = useState({ x: 0, y: 0 });
   const [selectedTool, setSelectedToolLocal] = useState<Tool>('pen');
 
+  const zIndex = useSelector((state: RootState) => state.zIndex.components.toolbox);
+
   const dispatch = useDispatch();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (onMouseDown) onMouseDown(e as React.MouseEvent<HTMLDivElement>);
     setLastMousePosition({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
+    dispatch(Dragging('toolbox'));
   };
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  }, []);
+    dispatch(Dropped('toolbox'));
+  }, [dispatch]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging) return;
@@ -59,7 +65,7 @@ const ToolBox: React.FC<ToolBoxProps> = ({style, onMouseDown}) => {
     <div 
       id="toolbox" 
       className="toolbox" 
-      style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: isDragging ? 100 : 1 }}
+      style={{...style, position: 'absolute', left: position.x, top: position.y, zIndex: zIndex }}
       onMouseDown={handleMouseDown}
     >
       <div className="toolbox-title">Toolbox</div>
